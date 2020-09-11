@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.css';
 
 import { FirebaseContext } from './context/firebase';
+
 import Firebase from './config/Firebase';
 import App from './App';
 

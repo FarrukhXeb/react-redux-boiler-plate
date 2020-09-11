@@ -21,7 +21,7 @@ class SignupForm extends Component {
     event.preventDefault();
     const { email, password } = this.state;
 
-    this.props
+    this.props.firebase
       .doCreateUserWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -105,7 +105,7 @@ class SignupForm extends Component {
 }
 
 SignupForm.propTypes = {
-  doCreateUserWithEmailAndPassword: PropTypes.func.isRequired,
+  firebase: PropTypes.object.isRequired,
 };
 
 export default FirebaseHoc(SignupForm);

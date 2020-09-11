@@ -10,33 +10,37 @@ import SignupContainer from './pages/Signup';
 import MainLayout from './layouts/MainLayout';
 import NoHeaderFooterLayout from './layouts/NoHeaderFooterLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <AppRoute
-          component={HomeContainer}
-          layout={DashboardLayout}
-          path={'/'}
-          exact
-        />
-        <AppRoute
-          component={AboutContainer}
-          layout={MainLayout}
-          path={'/about'}
-        />
-        <AppRoute
-          component={LoginContainer}
-          layout={NoHeaderFooterLayout}
-          path={'/login'}
-        />
-        <AppRoute
-          component={SignupContainer}
-          layout={NoHeaderFooterLayout}
-          path={'/signup'}
-        />
-      </Switch>
-    </BrowserRouter>
-  );
+// HOC
+import withAuthentication from './hoc/withAuthentication';
+class App extends React.Component {
+  render(){
+    return (
+      <BrowserRouter>
+        <Switch>
+          <AppRoute
+            component={HomeContainer}
+            layout={DashboardLayout}
+            path={'/'}
+            exact
+          />
+          <AppRoute
+            component={AboutContainer}
+            layout={MainLayout}
+            path={'/about'}
+          />
+          <AppRoute
+            component={LoginContainer}
+            layout={NoHeaderFooterLayout}
+            path={'/login'}
+          />
+          <AppRoute
+            component={SignupContainer}
+            layout={NoHeaderFooterLayout}
+            path={'/signup'}
+          />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
+export default withAuthentication(App);
