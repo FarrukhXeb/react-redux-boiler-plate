@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
@@ -15,6 +15,22 @@ export default function Header() {
         <Nav.Link as={Link} to="/about">
           About
         </Nav.Link>
+      </Nav>
+      <Nav>
+        <Dropdown>
+          <Dropdown.Toggle className={'btn btn-ghost'}>
+            Dropdown Button
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item as={Link} to={'/login'}>
+              Login
+            </Dropdown.Item>
+            <Dropdown.Item as={Link} to={'/signup'}>
+              Sign Up
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Nav>
     </Navbar>
   );

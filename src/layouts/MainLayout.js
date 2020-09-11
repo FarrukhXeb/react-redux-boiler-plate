@@ -7,7 +7,7 @@ export default function MainLayout({ children }) {
   return (
     <>
       <Header />
-      <div id={'content'}>{children}</div>
+      <main>{children}</main>
       <Footer />
     </>
   );

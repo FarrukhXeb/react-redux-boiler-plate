@@ -1,9 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import AppRoute from './routes/AppRoute';
+// Containers
 import HomeContainer from './pages/Home';
 import AboutContainer from './pages/About';
-import AppRoute from './routes/AppRoute';
+import LoginContainer from './pages/Login';
+import SignupContainer from './pages/Signup';
+// Layouts
 import MainLayout from './layouts/MainLayout';
+import NoHeaderFooterLayout from './layouts/NoHeaderFooterLayout';
+import DashboardLayout from './layouts/DashboardLayout';
 
 export default function App() {
   return (
@@ -11,7 +17,7 @@ export default function App() {
       <Switch>
         <AppRoute
           component={HomeContainer}
-          layout={MainLayout}
+          layout={DashboardLayout}
           path={'/'}
           exact
         />
@@ -19,7 +25,16 @@ export default function App() {
           component={AboutContainer}
           layout={MainLayout}
           path={'/about'}
-          exact
+        />
+        <AppRoute
+          component={LoginContainer}
+          layout={NoHeaderFooterLayout}
+          path={'/login'}
+        />
+        <AppRoute
+          component={SignupContainer}
+          layout={NoHeaderFooterLayout}
+          path={'/signup'}
         />
       </Switch>
     </BrowserRouter>

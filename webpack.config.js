@@ -26,9 +26,14 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './build'),
+    publicPath: '/',
   },
   module: {
     rules,
+  },
+  devServer: {
+    port: 9000,
+    historyApiFallback: true,
   },
   plugins: [
     new HTMLplugin({

@@ -1,0 +1,13 @@
+.btn:focus,
+.btn:hover {
+  background: transparent;
+  border-color: #efefef;
+}
+
+.show > .btn-primary.dropdown-toggle {
+  background: transparent;
+}
+
+.btn-ghost {
+  border: 1px solid #efefef;
+}
