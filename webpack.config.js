@@ -1,6 +1,7 @@
 const path = require('path');
 const HTMLplugin = require('html-webpack-plugin');
-
+const Dotenv = require('dotenv-webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const rules = [
   {
     test: /\.(js|jsx)$/,
@@ -8,8 +9,24 @@ const rules = [
     use: ['babel-loader', 'eslint-loader'],
   },
   {
-    test: /\.css$/,
-    use: ['style-loader', 'css-loader'],
+    test: /\.(sa|sc|c)ss$/,
+    use: [
+      {
+        loader:
+          process.env.NODE_ENV === 'production'
+            ? 'style-loader'
+            : MiniCssExtractPlugin.loader,
+      },
+      {
+        loader: 'css-loader',
+      },
+      {
+        loader: 'postcss-loader',
+      },
+      {
+        loader: 'sass-loader',
+      },
+    ],
   },
   {
     test: /\.html$/,
@@ -19,14 +36,22 @@ const rules = [
       },
     ],
   },
+  {
+    test: /\.(gif|png|jpe?g|svg)$/i,
+    use: ['file-loader', 'url-loader'],
+  },
 ];
 
 module.exports = {
+  watch: true,
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './build'),
     publicPath: '/',
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.scss'],
   },
   module: {
     rules,
@@ -40,5 +65,9 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html',
     }),
+    new MiniCssExtractPlugin({
+      filename: 'index.css',
+    }),
+    new Dotenv(),
   ],
 };

@@ -4,14 +4,9 @@ import AppRoute from './routes/AppRoute';
 // Containers
 import HomeContainer from './pages/Home';
 import AboutContainer from './pages/About';
-import LoginContainer from './pages/Login';
-import SignupContainer from './pages/Signup';
 // Layouts
 import MainLayout from './layouts/MainLayout';
-import NoHeaderFooterLayout from './layouts/NoHeaderFooterLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-// HOC
-import withAuthentication from './hoc/withAuthentication';
 class App extends React.Component {
   render(){
     return (
@@ -28,19 +23,9 @@ class App extends React.Component {
             layout={MainLayout}
             path={'/about'}
           />
-          <AppRoute
-            component={LoginContainer}
-            layout={NoHeaderFooterLayout}
-            path={'/login'}
-          />
-          <AppRoute
-            component={SignupContainer}
-            layout={NoHeaderFooterLayout}
-            path={'/signup'}
-          />
         </Switch>
       </BrowserRouter>
     );
   }
 }
-export default withAuthentication(App);
+export default App;
