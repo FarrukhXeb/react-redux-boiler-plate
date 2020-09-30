@@ -13,19 +13,16 @@ const rules = [
     use: [
       {
         loader:
-          process.env.NODE_ENV === 'production'
+          process.env.REACT_APP_ENV === 'production'
             ? 'style-loader'
             : MiniCssExtractPlugin.loader,
       },
-      {
-        loader: 'css-loader',
-      },
-      {
-        loader: 'postcss-loader',
-      },
-      {
-        loader: 'sass-loader',
-      },
+      'css-loader'
+      ,
+      'postcss-loader'
+      ,
+      'sass-loader'
+      ,
     ],
   },
   {
