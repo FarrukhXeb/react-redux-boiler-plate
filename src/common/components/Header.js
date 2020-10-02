@@ -1,8 +1,22 @@
-import React from 'react';
-import { AppBar, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import {
+  AppBar,
+  Avatar,
+  ClickAwayListener,
+  Grow,
+  makeStyles,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
+import UserIcon from '@material-ui/icons/PersonOutline';
+import { connect } from 'react-redux';
+import { logOut } from '../../redux/Auth/actions';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.background.paper,
@@ -12,19 +26,61 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     textDecoration: 'none',
     fontWeight: 'bold',
-    color:theme.palette.primary.dark,
+    color: theme.palette.primary.dark,
+  },
+  avatar: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   },
 }));
 
-export default function Header({ position, classes: className }) {
+function Header({ classes: className, logOut }) {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
+
+  const handleLogOut = ()=>{
+    logOut();
+  };
 
   return (
     <AppBar
-      position={position ? position : 'static'}
+      position={'static'}
       className={className}
       classes={{
-        root:classes.appBar
+        root: classes.appBar,
       }}
     >
       <Toolbar>
@@ -36,11 +92,57 @@ export default function Header({ position, classes: className }) {
         >
           React App Practice
         </Typography>
+        <Avatar
+          ref={anchorRef}
+          aria-controls={open ? 'menu-list-grow' : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+          className={classes.avatar}
+        >
+          <UserIcon />
+        </Avatar>
+        <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => 
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom' ? 'center top' : 'center bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="menu-list-grow"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          }
+        </Popper>
       </Toolbar>
     </AppBar>
   );
 }
 Header.propTypes = {
-  position: PropTypes.string,
   classes: PropTypes.string,
+  logOut:PropTypes.func.isRequired
 };
+
+const mapDispatchToProps = (dispatch)=>({
+  logOut:()=>dispatch(logOut())
+});
+
+export default connect(null, mapDispatchToProps)(Header);

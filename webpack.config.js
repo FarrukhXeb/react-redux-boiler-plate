@@ -17,12 +17,9 @@ const rules = [
             ? 'style-loader'
             : MiniCssExtractPlugin.loader,
       },
-      'css-loader'
-      ,
-      'postcss-loader'
-      ,
-      'sass-loader'
-      ,
+      'css-loader',
+      'postcss-loader',
+      'sass-loader',
     ],
   },
   {
@@ -56,6 +53,10 @@ module.exports = {
   devServer: {
     port: 9000,
     historyApiFallback: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      https: true,
+    },
   },
   plugins: [
     new HTMLplugin({

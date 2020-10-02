@@ -4,5 +4,5 @@ export default function NoHeaderFooterLayout({ children }) {
   return <main className={'min-height-100 pt-1 pl-1'}>{children}</main>;
 }
 NoHeaderFooterLayout.propTypes = {
-  children: PropTypes.elementType,
+  children: PropTypes.object.isRequired,
 };

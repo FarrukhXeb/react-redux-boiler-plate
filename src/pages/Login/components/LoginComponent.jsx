@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Avatar,
   Button,
@@ -8,8 +10,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logIn } from '../../../redux/Auth/actions';
+import Loader from '../../../common/components/Loader';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,8 +35,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginComponent() {
+function LoginComponent(props) {
+  const { logIn, authenticating } = props;
   const classes = useStyles();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(email!=='' && password!=='')
+      await logIn({ email, password });
+  };
+
+  
 
   return (
     <Container component="main" maxWidth="xs">
@@ -43,13 +59,15 @@ export default function LoginComponent() {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 label="Email Address"
                 name="email"
@@ -61,6 +79,8 @@ export default function LoginComponent() {
                 variant="outlined"
                 required
                 fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 name="password"
                 label="Password"
                 type="password"
@@ -69,15 +89,19 @@ export default function LoginComponent() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Log In
-          </Button>
+          {authenticating ? 
+            <Loader/>
+            : 
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Log In
+            </Button>
+          }
           <Grid container justify="flex-end">
             <Grid item>
               <Link to={'/signup'} variant="body2">
@@ -90,3 +114,19 @@ export default function LoginComponent() {
     </Container>
   );
 }
+
+LoginComponent.propTypes = {
+  authenticating: PropTypes.bool.isRequired,
+  logIn: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  authenticating: state.auth.authenticating,
+  authenticationError: state.auth.authenticationError,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  logIn: (data) => dispatch(logIn(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
