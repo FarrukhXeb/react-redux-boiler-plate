@@ -38,16 +38,70 @@ const useStyles = makeStyles((theme) => ({
 function SignUpComponent(props) {
   const { signingUp, signingUpError, signUpSuccess, signUp } = props;
   const classes = useStyles();
-  const [email, setEmail] = useState('');
-  const [password, setPassword]= useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [inputs, setInputs] = useState({
+    email:'',
+    password:'',
+    confirmPassword:'',
+    firstName:'',
+    lastName:''
+  });
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    await signUp({ email, firstName, lastName, password });
+    if(validateForm()){
+      inputs.confirmPassword = undefined;
+      await signUp(inputs);
+    }
   };
+
+
+  const validateForm = () => {
+    let valid = true;
+
+    Object.values(errors).forEach(
+      // if we have an error string set valid to false
+      (val) => val.length > 0 && (valid = false)
+    );
+    return valid;
+  };
+
+  const handleChange = (e)=>{
+    const { name, value } = e.target;
+
+    let errs = {};
+
+    switch (name) {
+    case 'email': 
+      errs.email = 
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)
+        ? ''
+        : 'Email is not valid!';
+      break;
+    case 'firstName':
+      errs.firsName = value.length===0?'First name is required':'';
+      break;
+    case 'lastName':
+      errs.firsName = value.length===0?'Last name is required':'';
+      break;
+    case 'password': 
+      errs.password = 
+        value.length < 8
+          ? 'Password must be 8 characters long!'
+          : '';
+      break;
+    case 'confirmPassword':
+      errs.confirmPassword = value!==inputs.password?'Passwords do not match':'';
+      break;
+    
+    default:
+      break;
+    }
+
+    setErrors(errs);
+    setInputs({ ...inputs, [name]:value });
+  };
+
 
   if (signUpSuccess) return <Redirect to={'/login'} />;
 
@@ -65,10 +119,12 @@ function SignUpComponent(props) {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
+                name={'firstName'}
                 variant="outlined"
-                value={firstName}
-                onChange={(e)=>setFirstName(e.target.value)}
-                required
+                helperText={errors.firstName?.length>0 && errors.firstName}
+                error={errors.firstName?.length>0}
+                value={inputs.firstName}
+                onChange={handleChange}
                 fullWidth
                 label="First Name"
                 autoFocus
@@ -77,9 +133,10 @@ function SignUpComponent(props) {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                value={lastName}
-                onChange={(e)=>setLastName(e.target.value)}
-                required
+                value={inputs.lastName}
+                name={'lastName'}
+                helperText={errors.lastName?.length>0 && errors.lastName}
+                onChange={handleChange}
                 fullWidth
                 label="Last Name"
                 autoComplete="lname"
@@ -88,10 +145,11 @@ function SignUpComponent(props) {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
-                value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                value={inputs.email}
+                helperText={errors.email?.length>0 && errors.email}
+                error={errors.email?.length>0}
+                onChange={handleChange}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
@@ -100,10 +158,11 @@ function SignUpComponent(props) {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
-                value={password}
-                onChange={(e)=>setPassword(e.target.value)}
+                value={inputs.password}
+                helperText={errors.password?.length>0 && errors.password}
+                error={errors.password?.length>0}
+                onChange={handleChange}
                 name="password"
                 label="Password"
                 type="password"
@@ -113,10 +172,11 @@ function SignUpComponent(props) {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                value={confirmPassword}
-                onChange={(e)=>setConfirmPassword(e.target.value)}
-                required
+                value={inputs.confirmPassword}
+                onChange={handleChange}
                 fullWidth
+                helperText={errors.confirmPassword?.length>0 && errors.confirmPassword}
+                error={errors.confirmPassword?.length>0}
                 name="confirmPassword"
                 label="Confirm Password"
                 type="password"

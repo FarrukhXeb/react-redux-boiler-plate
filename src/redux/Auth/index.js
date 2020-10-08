@@ -60,6 +60,7 @@ export default (state = initialState, action) => {
       authenticating: false,
       isAuthenticated: true,
       authenticationError: '',
+      checkAuthError:'',
       user: payload,
     };
   case AUTHENTICATION_FAILED:

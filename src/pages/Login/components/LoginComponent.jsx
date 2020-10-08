@@ -39,15 +39,50 @@ function LoginComponent(props) {
   const { logIn, authenticating } = props;
   const classes = useStyles();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [inputs, setInputs] = useState({ email:'', password:'' });
+  const [errors, setError] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(email!=='' && password!=='')
-      await logIn({ email, password });
+    if(validateForm())
+      await logIn(inputs);
   };
 
+
+  const validateForm = () => {
+    let valid = true;
+
+    Object.values(errors).forEach(
+      // if we have an error string set valid to false
+      (val) => val.length > 0 && (valid = false)
+    );
+    return valid;
+  };
+
+  const handleChange = async (e)=>{
+    const { name, value } = e.target;
+
+    let errs = {};
+
+    switch(name){
+    case 'email': 
+      errs.email = 
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)
+        ? ''
+        : 'Email is not valid!';
+      break;
+    case 'password': 
+      errs.password = 
+        value.length < 8
+          ? 'Password must be 8 characters long!'
+          : '';
+      break;
+    default:
+      break;
+    }
+    setError(errs);
+    setInputs({ ...inputs, [name]:value });
+  };
   
 
   return (
@@ -65,9 +100,11 @@ function LoginComponent(props) {
               <TextField
                 variant="outlined"
                 required
+                helperText={errors.email?.length>0 && errors.email}
+                error={errors.email?.length>0}
                 fullWidth
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={inputs.email}
+                onChange={handleChange}
                 id="email"
                 label="Email Address"
                 name="email"
@@ -79,8 +116,10 @@ function LoginComponent(props) {
                 variant="outlined"
                 required
                 fullWidth
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                helperText={errors.password?.length>0 && errors.password}
+                error={errors.password?.length>0}
+                value={inputs.password}
+                onChange={handleChange}
                 name="password"
                 label="Password"
                 type="password"

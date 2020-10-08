@@ -52,7 +52,6 @@ export const getLoginStatus = () => async (dispatch) => {
     const data = jwt_decode(token);
     const res = await http.get(`/user/${data.id}`);
 
-    console.log(res);
     if(res.success)
       dispatch({ type: CHECKING_AUTH_SUCCESS, payload:res.user });
   } else
