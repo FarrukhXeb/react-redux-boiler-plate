@@ -118,7 +118,6 @@ function SignUpComponent(props) {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
                 name={'firstName'}
                 variant="outlined"
                 helperText={errors.firstName?.length>0 && errors.firstName}
@@ -139,7 +138,6 @@ function SignUpComponent(props) {
                 onChange={handleChange}
                 fullWidth
                 label="Last Name"
-                autoComplete="lname"
               />
             </Grid>
             <Grid item xs={12}>
@@ -152,7 +150,6 @@ function SignUpComponent(props) {
                 onChange={handleChange}
                 label="Email Address"
                 name="email"
-                autoComplete="email"
               />
             </Grid>
             <Grid item xs={12}>
@@ -166,7 +163,7 @@ function SignUpComponent(props) {
                 name="password"
                 label="Password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete={'password'}
               />
             </Grid>
             <Grid item xs={12}>
@@ -180,7 +177,7 @@ function SignUpComponent(props) {
                 name="confirmPassword"
                 label="Confirm Password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete={'confirm-password'}
               />
             </Grid>
           </Grid>

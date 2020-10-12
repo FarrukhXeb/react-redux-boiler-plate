@@ -123,7 +123,7 @@ function Header({ classes: className, logOut }) {
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem component={Link} to={'/profile'} onClick={handleClose}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My account</MenuItem>
                     <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                   </MenuList>
