@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logIn } from '../../../redux/Auth/actions';
 import Loader from '../../../common/components/Loader';
+import isObjectEmpty from '../../../utils/isObjectEmpty';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,19 +45,8 @@ function LoginComponent(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(validateForm())
+    if(isObjectEmpty(errors))
       await logIn(inputs);
-  };
-
-
-  const validateForm = () => {
-    let valid = true;
-
-    Object.values(errors).forEach(
-      // if we have an error string set valid to false
-      (val) => val.length > 0 && (valid = false)
-    );
-    return valid;
   };
 
   const handleChange = async (e)=>{

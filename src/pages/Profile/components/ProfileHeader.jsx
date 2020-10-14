@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Avatar, makeStyles, Chip, Typography } from '@material-ui/core';
+import { Paper, Avatar, makeStyles, Typography, Chip, IconButton } from '@material-ui/core';
 import { connect } from 'react-redux';
 import ProfileImage from '../static/dummy-profile-pic.png';
+import { Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme)=>({
-  root:{
+  header:{
+    display:'flex',
+    justifyContent:'end'
+  },
+  content:{
     display:'flex',
     flexDirection:'column',
     alignItems:'center',
@@ -24,29 +29,38 @@ const useStyles = makeStyles((theme)=>({
   }
 }));
 
-function ProfileHeader({ skills, user }) {
+function ProfileHeader({ profile, user, toggleEdit }) {
   const classes = useStyles();
 
   return (
-    <Paper elevation={4} className={classes.root}>
-      <Avatar style={{ width:150, height:150 }} src={ProfileImage}/>
-      <Typography className={classes.name} variant={'caption'}>{user.firstName.toUpperCase()} {user.lastName.toUpperCase()}</Typography>
-      <div className={classes.skillContainer}>
-        {
-          skills.split(',').map(skill=><Chip variant={'outlined'} key={skill} className={'skill'} size={'small'} color={'primary'} label={skill}/>)
-        }
+    <Paper elevation={4}>
+      <div className={classes.header}>
+        <IconButton onClick={toggleEdit}>
+          <Edit/>
+        </IconButton>
+      </div>
+      <div className={classes.content}>
+        <Avatar style={{ width:150, height:150 }} src={ProfileImage}/>
+        <Typography className={classes.name} variant={'caption'}>{user.firstName.toUpperCase()} {user.lastName.toUpperCase()}</Typography>
+        <Typography variant={'caption'}>{profile.profession}</Typography>
+        <div className={classes.skillContainer}>
+          {
+            profile.skills.split(',').map(skill=><Chip variant={'outlined'} key={skill} className={'skill'} size={'small'} color={'primary'} label={skill}/>)
+          }
+        </div>
       </div>
     </Paper>
   );
 }
 
 ProfileHeader.propTypes = {
-  skills:PropTypes.objectOf(PropTypes.object).isRequired,
-  user:PropTypes.objectOf(PropTypes.object).isRequired,
+  profile:PropTypes.object.isRequired,
+  user:PropTypes.object.isRequired,
+  toggleEdit:PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state)=>({
-  skills:state.auth.user.profile.skills,
+  profile:state.profile.profile,
   user:state.auth.user
 });
 

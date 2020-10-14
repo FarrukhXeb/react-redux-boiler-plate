@@ -47,7 +47,7 @@ class App extends React.Component {
             <ProtectedRoute
               component={ProfileContainer}
               layout={DashboardLayout}
-              path={'/profile'}
+              path={'/profile/:fullName'}
             />
             <AppRoute
               component={LoginContainer}

@@ -8,12 +8,13 @@ import {
   makeStyles,
   TextField,
   Typography,
-  CircularProgress,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signUp } from '../../../redux/Auth/actions';
+import Loading from '../../../common/components/Loader';
+import isObjectEmpty from '../../../utils/isObjectEmpty';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,21 +50,9 @@ function SignUpComponent(props) {
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    if(validateForm()){
-      inputs.confirmPassword = undefined;
+    if(isObjectEmpty(errors)){
       await signUp(inputs);
     }
-  };
-
-
-  const validateForm = () => {
-    let valid = true;
-
-    Object.values(errors).forEach(
-      // if we have an error string set valid to false
-      (val) => val.length > 0 && (valid = false)
-    );
-    return valid;
   };
 
   const handleChange = (e)=>{
@@ -182,7 +171,7 @@ function SignUpComponent(props) {
             </Grid>
           </Grid>
           {signingUp ? 
-            <CircularProgress />
+            <Loading />
             : 
             <Button
               type="submit"

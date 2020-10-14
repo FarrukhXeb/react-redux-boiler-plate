@@ -11,10 +11,14 @@ import {
   Popper,
   Toolbar,
   Typography,
+  IconButton,
+  useTheme,
+  useMediaQuery,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import UserIcon from '@material-ui/icons/PersonOutline';
+import MenuIcon from '@material-ui/icons/Menu';
 import { connect } from 'react-redux';
 import { logOut } from '../../redux/Auth/actions';
 const useStyles = makeStyles((theme) => ({
@@ -34,9 +38,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header({ classes: className, logOut }) {
+function Header({ classes: className, logOut, user }) {
   const classes = useStyles();
-
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const [open, setOpen] = useState(false);
   const anchorRef = React.useRef(null);
 
@@ -70,8 +75,7 @@ function Header({ classes: className, logOut }) {
     prevOpen.current = open;
   }, [open]);
 
-
-  const handleLogOut = ()=>{
+  const handleLogOut = () => {
     logOut();
   };
 
@@ -84,6 +88,11 @@ function Header({ classes: className, logOut }) {
       }}
     >
       <Toolbar>
+        {!matches && 
+          <IconButton>
+            <MenuIcon />
+          </IconButton>
+        }
         <Typography
           variant="h6"
           component={Link}
@@ -123,7 +132,13 @@ function Header({ classes: className, logOut }) {
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem component={Link} to={'/profile'} onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem
+                      component={Link}
+                      to={`/profile/${user.firstName}-${user.lastName}`}
+                      onClick={handleClose}
+                    >
+                      Profile
+                    </MenuItem>
                     <MenuItem onClick={handleClose}>My account</MenuItem>
                     <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                   </MenuList>
@@ -138,11 +153,16 @@ function Header({ classes: className, logOut }) {
 }
 Header.propTypes = {
   classes: PropTypes.string,
-  logOut:PropTypes.func.isRequired
+  logOut: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-const mapDispatchToProps = (dispatch)=>({
-  logOut:()=>dispatch(logOut())
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
 });
 
-export default connect(null, mapDispatchToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  logOut: () => dispatch(logOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
