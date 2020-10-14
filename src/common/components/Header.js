@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header({ classes: className, logOut, user }) {
+function Header({ classes: className, logOut, user, toggleDrawer }) {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -89,7 +89,7 @@ function Header({ classes: className, logOut, user }) {
     >
       <Toolbar>
         {!matches && 
-          <IconButton>
+          <IconButton onClick={toggleDrawer}>
             <MenuIcon />
           </IconButton>
         }
@@ -155,6 +155,7 @@ Header.propTypes = {
   classes: PropTypes.string,
   logOut: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  toggleDrawer: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

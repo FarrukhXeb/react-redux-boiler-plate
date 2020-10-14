@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../common/components/Header';
-import { makeStyles, useTheme, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme, useMediaQuery, Drawer } from '@material-ui/core';
 import Sidebar from '../common/components/Sidebar';
 // import Footer from '../common/components/Footer';
 
@@ -20,15 +20,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DashboardLayout({ children }) {
+  const [drawer, toggleDrawer] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <>
-      <Header classes={classes.appBar} />
+      <Header classes={classes.appBar} toggleDrawer={()=>toggleDrawer(true)}/>
       <div className={classes.root}>
         {matches && <Sidebar />}
+        {!matches && 
+          <Drawer open={drawer} onClose={()=>toggleDrawer(false)}>
+            <Sidebar />
+          </Drawer>
+        }
         <main className={classes.content}>{children}</main>
       </div>
       {/* <Footer/> */}
