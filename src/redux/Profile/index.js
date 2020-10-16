@@ -36,7 +36,7 @@ export default (state = initialState, action) => {
   case CREATING_PROFILE_SUCCESS:
     return {
       ...state,
-      creatingProfileSuccess: false,
+      creatingProfile: false,
       profile:payload
     };
   case CREATING_PROFILE_ERROR:

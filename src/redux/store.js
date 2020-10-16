@@ -8,13 +8,20 @@ const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const middleware = [thunk];
 
-const reducers = {
-  auth: AuthReducer,
-  profile: ProfileReducer
+const rootReducer = (state, action)=>{
+  if(action.payload==='Session expired. Please login again'){
+    state ={};
+  }
+  return appReducer(state, action);
 };
 
+const appReducer = combineReducers({
+  auth: AuthReducer,
+  profile: ProfileReducer
+});
+
 const store = createStore(
-  combineReducers({ ...reducers }),
+  rootReducer,
   composeEnhancer(applyMiddleware(...middleware))
 );
 

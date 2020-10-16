@@ -50,10 +50,15 @@ export const getLoginStatus = () => async (dispatch) => {
   
   if (token) {
     const data = jwt_decode(token);
-    const res = await http.get(`/user/${data.id}`);
 
-    if(res.success)
-      dispatch({ type: CHECKING_AUTH_SUCCESS, payload:res.user });
+    if(data.exp>Date.now()) logOut();
+    else{
+      const res = await http.get(`/user/${data.id}`);
+
+      if(res.success)
+        dispatch({ type: CHECKING_AUTH_SUCCESS, payload:res.user });
+    }
+
   } else
     dispatch({
       type: CHECKING_AUTH_FAILURE,

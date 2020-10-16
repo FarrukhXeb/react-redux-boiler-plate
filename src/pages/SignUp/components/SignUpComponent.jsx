@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signUp } from '../../../redux/Auth/actions';
 import Loading from '../../../common/components/Loader';
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignUpComponent(props) {
-  const { signingUp, signingUpError, signUpSuccess, signUp } = props;
+  const { signingUp, signingUpError, signUp } = props;
   const classes = useStyles();
   const [inputs, setInputs] = useState({
     email:'',
@@ -90,9 +90,6 @@ function SignUpComponent(props) {
     setErrors(errs);
     setInputs({ ...inputs, [name]:value });
   };
-
-
-  if (signUpSuccess) return <Redirect to={'/login'} />;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -203,7 +200,6 @@ function SignUpComponent(props) {
 const mapStateToProps = (state) => ({
   signingUp: state.auth.signingUp,
   signingUpError: state.auth.signingUpError,
-  signUpSuccess: state.auth.signUpSuccess,
 });
 
 const mapDispatchToProps = (dispatch) => ({

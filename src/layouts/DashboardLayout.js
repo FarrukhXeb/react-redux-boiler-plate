@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../common/components/Header';
 import { makeStyles, useTheme, useMediaQuery, Drawer } from '@material-ui/core';
 import Sidebar from '../common/components/Sidebar';
+import { withRouter } from 'react-router-dom';
 // import Footer from '../common/components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  [theme.breakpoints.up('md')]: {
-    appBar: {
+  appBar: {
+    [theme.breakpoints.up('md')]: {
       paddingLeft: 240,
+    },
+    '& .MuiToolbar-root': {
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        justifyContent: 'space-between',
+      },
     },
   },
   content: {
@@ -19,19 +26,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DashboardLayout({ children }) {
+function DashboardLayout({ children, history }) {
   const [drawer, toggleDrawer] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
 
+  useEffect(() => {
+    history.listen(() => {
+      if (drawer) toggleDrawer(false);
+    });
+    () => history.unlisten();
+  });
+
   return (
     <>
-      <Header classes={classes.appBar} toggleDrawer={()=>toggleDrawer(true)}/>
+      <Header
+        hasNavToggle={true}
+        classes={classes.appBar}
+        toggleDrawer={() => toggleDrawer(true)}
+      />
       <div className={classes.root}>
         {matches && <Sidebar />}
         {!matches && 
-          <Drawer open={drawer} onClose={()=>toggleDrawer(false)}>
+          <Drawer open={drawer} onClose={() => toggleDrawer(false)}>
             <Sidebar />
           </Drawer>
         }
@@ -44,4 +62,7 @@ export default function DashboardLayout({ children }) {
 
 DashboardLayout.propTypes = {
   children: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
+
+export default withRouter(DashboardLayout);

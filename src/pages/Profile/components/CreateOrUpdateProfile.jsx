@@ -15,7 +15,10 @@ import {
   InputLabel,
   Button,
   FormHelperText,
+  IconButton,
+  Tooltip
 } from '@material-ui/core';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import { connect } from 'react-redux';
 import hasNumbers from '../../../utils/hasNumbers';
 import isObjectEmpty from '../../../utils/isObjectEmpty';
@@ -26,6 +29,7 @@ import { useEffect } from 'react';
 const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: 'bolder',
+    flexGrow: 1,
   },
   paper: {
     padding: theme.spacing(3),
@@ -40,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
   },
 }));
 
@@ -108,16 +116,24 @@ const CreateOrUpdateProfile = (props) => {
     if (profession === '') errs.profession = 'Profession is required';
     if (hasNumbers(profession)) errs.profession = 'Input only alphabets';
     setErrors(errs);
-    console.log(errs);
   };
 
   return (
     <Grid container>
       <Grid item xs={12} lg={12} md={12}>
         <Paper elevation={4} className={classes.paper}>
-          <Typography className={classes.title} variant={'h6'}>
-            {editing ? 'Update your profile' : 'Create your profile'}
-          </Typography>
+          <div className={classes.header}>
+            {editing && 
+            <Tooltip title={'Back'}>
+              <IconButton onClick={toggleEdit}>
+                <ArrowBack />
+              </IconButton>
+            </Tooltip>
+            }
+            <Typography className={classes.title} variant={'h6'}>
+              {editing ? 'Update your profile' : 'Create your profile'}
+            </Typography>
+          </div>
         </Paper>
       </Grid>
       <Grid item xs={12} lg={12} md={12}>

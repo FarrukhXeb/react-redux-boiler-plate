@@ -14,6 +14,7 @@ import {
   IconButton,
   useTheme,
   useMediaQuery,
+  Hidden,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header({ classes: className, logOut, user, toggleDrawer }) {
+function Header({ classes: className, logOut, user, toggleDrawer, hasNavToggle }) {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -88,19 +89,21 @@ function Header({ classes: className, logOut, user, toggleDrawer }) {
       }}
     >
       <Toolbar>
-        {!matches && 
+        {!matches && hasNavToggle && 
           <IconButton onClick={toggleDrawer}>
             <MenuIcon />
           </IconButton>
         }
-        <Typography
-          variant="h6"
-          component={Link}
-          to={'/'}
-          className={classes.title}
-        >
+        <Hidden smDown>
+          <Typography
+            variant="h6"
+            component={Link}
+            to={'/'}
+            className={classes.title}
+          >
           React App Practice
-        </Typography>
+          </Typography>
+        </Hidden>
         <Avatar
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
@@ -156,6 +159,7 @@ Header.propTypes = {
   logOut: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   toggleDrawer: PropTypes.func,
+  hasNavToggle: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({

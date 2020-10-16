@@ -6,7 +6,7 @@ import Header from '../common/components/Header';
 export default function MainLayout({ children }) {
   return (
     <>
-      <Header />
+      <Header hasNavToggle={false} />
       <main>{children}</main>
       {/* <Footer /> */}
     </>
