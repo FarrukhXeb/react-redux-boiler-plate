@@ -6,7 +6,8 @@ import AppRoute from './routes/AppRoute';
 import HomeContainer from './pages/Home';
 import AboutContainer from './pages/About';
 import LoginContainer from './pages/Login';
-import ProfileContainer from './pages/Profile/ProfileContainer';
+import ProfileContainer from './pages/Profile';
+import ChatContainer from './pages/Chat';
 import PageNotFound from './pages/PageNotFound';
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -19,15 +20,14 @@ import { connect } from 'react-redux';
 import { getLoginStatus } from './redux/Auth/actions';
 import FullScreenLoader from './common/components/FullScreenLoader';
 class App extends React.Component {
-
-  componentDidMount(){
+  componentDidMount() {
     this.props.getLoginStatus();
   }
 
   render() {
-    const { checkingAuth } =this.props;
+    const { checkingAuth } = this.props;
 
-    if(checkingAuth) return <FullScreenLoader message={'Authenticating...'}/>;
+    if (checkingAuth) return <FullScreenLoader message={'Authenticating...'} />;
 
     return (
       <CssBaseline>
@@ -45,6 +45,11 @@ class App extends React.Component {
               path={'/about'}
             />
             <ProtectedRoute
+              component={ChatContainer}
+              layout={MainLayout}
+              path={'/chat'}
+            />
+            <ProtectedRoute
               component={ProfileContainer}
               layout={DashboardLayout}
               path={'/profile/:fullName'}
@@ -59,11 +64,7 @@ class App extends React.Component {
               layout={NoHeaderFooterLayout}
               path={'/signup'}
             />
-            <AppRoute
-              component={PageNotFound}
-              layout={MainLayout}
-              path={'*'}
-            />
+            <AppRoute component={PageNotFound} layout={MainLayout} path={'*'} />
           </Switch>
         </BrowserRouter>
       </CssBaseline>
@@ -72,17 +73,16 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  checkingAuth:PropTypes.bool.isRequired,
-  getLoginStatus:PropTypes.func.isRequired
+  checkingAuth: PropTypes.bool.isRequired,
+  getLoginStatus: PropTypes.func.isRequired,
 };
 
-
-const mapStateToProps = (state)=>({
-  checkingAuth:state.auth.checkingAuth
+const mapStateToProps = (state) => ({
+  checkingAuth: state.auth.checkingAuth,
 });
 
-const mapDispatchToProps = (dispatch)=>({
-  getLoginStatus:()=>dispatch(getLoginStatus())
+const mapDispatchToProps = (dispatch) => ({
+  getLoginStatus: () => dispatch(getLoginStatus()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

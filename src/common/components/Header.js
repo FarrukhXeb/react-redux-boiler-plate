@@ -39,7 +39,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header({ classes: className, logOut, user, toggleDrawer, hasNavToggle }) {
+function Header({
+  classes: className,
+  logOut,
+  user,
+  toggleDrawer,
+  hasNavToggle,
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -101,7 +107,7 @@ function Header({ classes: className, logOut, user, toggleDrawer, hasNavToggle }
             to={'/'}
             className={classes.title}
           >
-          React App Practice
+            React App Practice
           </Typography>
         </Hidden>
         <Avatar
@@ -142,7 +148,13 @@ function Header({ classes: className, logOut, user, toggleDrawer, hasNavToggle }
                     >
                       Profile
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem
+                      component={Link}
+                      to={'/chat'}
+                      onClick={handleClose}
+                    >
+                      Chat
+                    </MenuItem>
                     <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -159,7 +171,7 @@ Header.propTypes = {
   logOut: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   toggleDrawer: PropTypes.func,
-  hasNavToggle: PropTypes.bool.isRequired
+  hasNavToggle: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
