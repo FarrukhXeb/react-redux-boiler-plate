@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
-import ChatSideBar from './ChatSideBar';
+import PropTypes from 'prop-types';
 import ChatBody from './ChatBody';
 
 const useStyles = makeStyles(()=>({
@@ -9,17 +9,21 @@ const useStyles = makeStyles(()=>({
   },
 }));
 
-export default function ChatComponent() {
+function ChatComponent({ user, chat }) {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={4} className={classes.root}>
-      <Grid item lg={3} md={3} xl={3} sm={3}>
-        <ChatSideBar/>
-      </Grid>
-      <Grid item lg={9} md={9} xl={9} sm={9}>
-        <ChatBody/>
+    <Grid container className={classes.root}>
+      <Grid item lg={12} md={12} xl={12} sm={12}>
+        <ChatBody chatWith={user} chat={chat}/>
       </Grid>
     </Grid>
   );
 }
+
+ChatComponent.propTypes ={
+  user:PropTypes.object.isRequired,
+  chat:PropTypes.object.isRequired,
+};
+
+export default ChatComponent;

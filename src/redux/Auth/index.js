@@ -22,7 +22,7 @@ const initialState = {
   signingUpError: '',
   signUpSuccess: false,
   checkAuthError: '',
-  checkingAuth: false,
+  checkingAuth: true,
   logOutFailure: '',
   loggingOut: false,
 };

@@ -6,24 +6,38 @@ import { connect } from 'react-redux';
 const socket = io(process.env.REACT_APP_API_BASE_URL);
 
 class SocketProvider extends Component {
-  state={
-    users:[],
-  }
-  componentDidMount(){
+  state = {
+    users: [],
+    receivedMessage:null
+  };
+  componentDidMount() {
     socket.connect();
     socket.emit('join', this.props.user);
-    socket.on('joined', (users)=>{
+    socket.on('joined', (users) => {
       this.setState({ ...this.state, users });
     });
+    socket.on('message', (message)=>this.setState({ ...this.state, receivedMessage:message }));
   }
-  
-  componentWillUnmount(){
+
+  componentWillUnmount() {
     socket.disconnect();
   }
-  
+
+  emitMessage = (message) => {
+    socket.emit('message', message);
+  };
+
   render() {
     return (
-      <SocketContext.Provider value={{ users:this.state.users }}>
+      <SocketContext.Provider
+        value={{
+          users: this.state.users.filter(
+            (user) => user.id !== this.props.user.id
+          ),
+          sendMessage: (message) => this.emitMessage(message),
+          receivedMessage:this.state.receivedMessage
+        }}
+      >
         {this.props.children}
       </SocketContext.Provider>
     );
@@ -31,12 +45,12 @@ class SocketProvider extends Component {
 }
 
 SocketProvider.propTypes = {
-  children:PropTypes.node.isRequired,
-  user:PropTypes.object.isRequired
+  children: PropTypes.node.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state)=>({
-  user:state.auth.user
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(SocketProvider);

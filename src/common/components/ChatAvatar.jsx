@@ -1,7 +1,6 @@
-import { Avatar, Badge, createStyles, ListItem, ListItemAvatar, ListItemText, withStyles } from '@material-ui/core';
 import React from 'react';
 import PropTypes from 'prop-types';
-import firstLetterCapital from '../../../../utils/firstLetterCapital';
+import { Avatar, withStyles, createStyles, Badge, makeStyles } from '@material-ui/core';
 
 const StyledBadgeActive = withStyles((theme) =>
   createStyles({
@@ -65,43 +64,37 @@ const StyledBadgeInActive = withStyles((theme) =>
   }),
 )(Badge);
 
-function SingleUser({ user, handleChatWith }) {
-  const isOnline = isOnline(user.id);
+const useStyles = makeStyles(theme=>({
+  avatar:{
+    height:theme.spacing(8),
+    width:theme.spacing(8)
+  }
+}));
 
-  return (
-    <ListItem onClick={()=>handleChatWith(user)}>
-      <ListItemAvatar >
-        {
-          isOnline ?
-            <StyledBadgeActive 
-              overlap="circle"
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              variant="dot">
-              <Avatar />
-            </StyledBadgeActive> :
-            <StyledBadgeInActive 
-              overlap="circle"
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              variant="dot">
-              <Avatar />
-            </StyledBadgeInActive>
-          
-        }
-      </ListItemAvatar>
-      <ListItemText primary={`${firstLetterCapital(user.firstName)} ${firstLetterCapital(user.lastName)}`} />
-    </ListItem>
-  );
+function ChatAvatar({ isOnline }) {
+  const classes = useStyles();
+
+  return isOnline ?
+    <StyledBadgeActive 
+      overlap="circle"
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      variant="dot">
+      <Avatar className={classes.avatar} />
+    </StyledBadgeActive> :
+    <StyledBadgeInActive 
+      overlap="circle"
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      variant="dot">
+      <Avatar className={classes.avatar} />
+    </StyledBadgeInActive>;
 }
-
-SingleUser.propTypes = {
-  user:PropTypes.object,
-  handleChatWith:PropTypes.func.isRequired
+ChatAvatar.propTypes = {
+  isOnline:PropTypes.bool.isRequired
 };
-
-export default SingleUser;
+export default ChatAvatar;

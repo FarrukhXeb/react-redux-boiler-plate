@@ -47,7 +47,7 @@ class App extends React.Component {
             <ProtectedRoute
               component={ChatContainer}
               layout={MainLayout}
-              path={'/chat'}
+              path={'/chat/:fullName'}
             />
             <ProtectedRoute
               component={ProfileContainer}
