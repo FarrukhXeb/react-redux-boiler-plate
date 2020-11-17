@@ -4,7 +4,6 @@ import Header from '../common/components/Header';
 import { makeStyles, useTheme, useMediaQuery, Drawer } from '@material-ui/core';
 import Sidebar from '../common/components/Sidebar';
 import { withRouter } from 'react-router-dom';
-import SocketProvider from '../context/Socket/SocketProvider';
 // import Footer from '../common/components/Footer';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +40,7 @@ function DashboardLayout({ children, history }) {
   });
 
   return (
-    <SocketProvider>
+    <>
       <Header
         hasNavToggle={true}
         classes={classes.appBar}
@@ -57,7 +56,7 @@ function DashboardLayout({ children, history }) {
         <main className={classes.content}>{children}</main>
       </div>
       {/* <Footer/> */}
-    </SocketProvider>
+    </>
   );
 }
 

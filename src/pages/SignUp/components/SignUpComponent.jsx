@@ -208,7 +208,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 SignUpComponent.propTypes = {
   signingUp: PropTypes.bool.isRequired,
-  signUpSuccess: PropTypes.bool.isRequired,
   signingUpError: PropTypes.string.isRequired,
   signUp:PropTypes.func.isRequired
 };

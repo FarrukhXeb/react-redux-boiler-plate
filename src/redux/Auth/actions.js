@@ -53,10 +53,11 @@ export const getLoginStatus = () => async (dispatch) => {
 
     if(data.exp>Date.now()) logOut();
     else{
-      const res = await http.get(`/user/${data.id}`);
+      const res = await http.get(`/user/${data._id}`);
 
       if(res.success)
         dispatch({ type: CHECKING_AUTH_SUCCESS, payload:res.user });
+      else dispatch({ type:LOG_OUT });
     }
 
   } else

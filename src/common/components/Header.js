@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 function Header({
   classes: className,
   logOut,
-  user,
   toggleDrawer,
   hasNavToggle,
 }) {
@@ -141,13 +140,6 @@ function Header({
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem
-                      component={Link}
-                      to={`/profile/${user.firstName}-${user.lastName}`}
-                      onClick={handleClose}
-                    >
-                      Profile
-                    </MenuItem>
                     <MenuItem
                       component={Link}
                       to={'/chat'}

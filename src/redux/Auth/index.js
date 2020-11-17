@@ -76,6 +76,7 @@ export default (state = initialState, action) => {
       isAuthenticated: false,
       loggingOut: false,
       user: null,
+      checkingAuth: false,
     };
   case CHECKING_AUTH_FAILURE:
     return {

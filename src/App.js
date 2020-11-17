@@ -6,8 +6,6 @@ import AppRoute from './routes/AppRoute';
 import HomeContainer from './pages/Home';
 import AboutContainer from './pages/About';
 import LoginContainer from './pages/Login';
-import ProfileContainer from './pages/Profile';
-import ChatContainer from './pages/Chat';
 import PageNotFound from './pages/PageNotFound';
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -43,16 +41,6 @@ class App extends React.Component {
               component={AboutContainer}
               layout={DashboardLayout}
               path={'/about'}
-            />
-            <ProtectedRoute
-              component={ChatContainer}
-              layout={MainLayout}
-              path={'/chat/:fullName'}
-            />
-            <ProtectedRoute
-              component={ProfileContainer}
-              layout={DashboardLayout}
-              path={'/profile/:fullName'}
             />
             <AppRoute
               component={LoginContainer}

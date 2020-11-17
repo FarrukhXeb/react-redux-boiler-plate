@@ -7,7 +7,13 @@ import UserReducer from './User';
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const middleware = [thunk];
+// eslint-disable-next-line no-unused-vars
+const myMiddleware = (store)=>(next)=>(action)=>{
+  console.log('Testing myMiddleware()', store.getState());
+  next(action);
+};
+
+const middleware = [thunk, myMiddleware];
 
 const rootReducer = (state, action) => {
   if (action.payload === 'Session expired. Please login again') {
