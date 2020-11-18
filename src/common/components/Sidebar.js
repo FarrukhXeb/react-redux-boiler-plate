@@ -1,8 +1,8 @@
 import React from 'react';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { BookmarkOutlined, HomeOutlined } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { BookmarkOutlined, HomeOutlined, HouseTwoTone } from '@material-ui/icons';
+import { NavLink } from 'react-router-dom';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme)=>({
@@ -33,16 +33,23 @@ export default function Sidebar() {
       <div className={classes.drawerHeader} />
       <Divider />
       <List>
-        <ListItem button component={Link} to={'/'}>
+        <ListItem button component={NavLink} to={'/'}>
           <ListItemIcon><HomeOutlined/></ListItemIcon>
           <ListItemText primary={'Home'} />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button component={Link} to={'/about'}>
+        <ListItem button component={NavLink} to={'/about'}>
           <ListItemIcon><BookmarkOutlined/></ListItemIcon>
           <ListItemText primary={'About'} />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem button component={NavLink} to={'/tenant'}>
+          <ListItemIcon><HouseTwoTone/></ListItemIcon>
+          <ListItemText primary={'Tenants'} />
         </ListItem>
       </List>
     </Drawer>

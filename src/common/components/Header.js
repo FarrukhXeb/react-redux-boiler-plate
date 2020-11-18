@@ -39,12 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header({
-  classes: className,
-  logOut,
-  toggleDrawer,
-  hasNavToggle,
-}) {
+function Header({ classes: className, logOut, toggleDrawer, hasNavToggle }) {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -140,13 +135,6 @@ function Header({
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem
-                      component={Link}
-                      to={'/chat'}
-                      onClick={handleClose}
-                    >
-                      Chat
-                    </MenuItem>
                     <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>

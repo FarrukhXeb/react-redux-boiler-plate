@@ -4,15 +4,16 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import AppRoute from './routes/AppRoute';
 // Containers
 import HomeContainer from './pages/Home';
+import SignUpContainer from './pages/SignUp';
 import AboutContainer from './pages/About';
 import LoginContainer from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
+import TenantsContainer from './pages/Tenants';
 // Layouts
 import MainLayout from './layouts/MainLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import NoHeaderFooterLayout from './layouts/NoHeaderFooterLayout';
 import { CssBaseline } from '@material-ui/core';
-import SignUpContainer from './pages/SignUp';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { connect } from 'react-redux';
 import { getLoginStatus } from './redux/Auth/actions';
@@ -41,6 +42,11 @@ class App extends React.Component {
               component={AboutContainer}
               layout={DashboardLayout}
               path={'/about'}
+            />
+            <ProtectedRoute
+              component={TenantsContainer}
+              layout={DashboardLayout}
+              path={'/tenant'}
             />
             <AppRoute
               component={LoginContainer}
