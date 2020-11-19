@@ -51,7 +51,7 @@ export const getLoginStatus = () => async (dispatch) => {
   if (token) {
     const data = jwt_decode(token);
 
-    if(data.exp>Date.now()) logOut();
+    if(data.exp>Date.now()) dispatch(logOut());
     else{
       const res = await http.get(`/user/${data._id}`);
 
